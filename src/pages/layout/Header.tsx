@@ -2,6 +2,8 @@ import styled from 'styled-components';
 import Button from '../../components/atoms/Button';
 import { FiSun, FiMoon } from 'react-icons/fi';
 import logo from '../../assets/store-worker.png';
+import { useAuthStore } from '../../store/authStore';
+import { useNavigate } from 'react-router-dom';
 
 const HeaderContainer = styled.header`
   display: flex;
@@ -9,6 +11,11 @@ const HeaderContainer = styled.header`
   align-items: center;
   background-color: ${({ theme }) => theme.colors.background};
   border-bottom: 1px solid ${({ theme }) => theme.colors.dark};
+
+  .header-actions {
+    display: flex;
+    gap: 1rem;
+  }
 `;
   
 const Brand = styled.div`
@@ -32,6 +39,14 @@ const Brand = styled.div`
 `;
 
 const Header = ( { toggleDarkMode, isDarkMode } : { toggleDarkMode: () => void, isDarkMode: boolean } ) => {
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const navigate = useNavigate();
+
+  const logout = () => {
+    useAuthStore.getState().logout();
+    navigate('/');
+  }
+
   return (
     <HeaderContainer>
       <Brand>
@@ -39,11 +54,22 @@ const Header = ( { toggleDarkMode, isDarkMode } : { toggleDarkMode: () => void, 
         <p>Atiende tu tienda</p>
       </Brand>
 
-      <Button variant="primary" size="md" onClick={toggleDarkMode}>
-        {
-          isDarkMode ? <FiSun /> : <FiMoon />
-        }
-      </Button>
+      <div className='header-actions'>
+        {isAuthenticated ? (
+          <Button variant='secondary' onClick={logout}>
+            Cerrar sesión
+          </Button>
+        ) : (
+          <Button variant='secondary' onClick={() => navigate('/login')}>
+            Iniciar sesión
+          </Button>
+        )}
+        <Button variant="primary" size="md" onClick={toggleDarkMode} iconLeft={isDarkMode ? <FiSun /> : <FiMoon />}>
+          {
+            isDarkMode ? 'Modo claro' : 'Modo oscuro'
+          }
+        </Button>
+      </div>
     </HeaderContainer>
   )
 }

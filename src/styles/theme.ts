@@ -53,10 +53,10 @@ export const lightTheme = {
     hard: '0 4px 12px rgba(0, 0, 0, 0.2)',
   },
   breakpoints: {
-    mobile: '480px',
-    tablet: '768px',
-    laptop: '1024px',
-    desktop: '1280px',
+    sm: '480px',
+    md: '768px',
+    lg: '1024px',
+    xl: '1280px',
   },
 };
 

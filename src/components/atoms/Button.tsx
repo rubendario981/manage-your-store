@@ -5,8 +5,10 @@ interface Variants {
   fullwidth?: string;
   size?: 'sm' | 'md' | 'lg';
   loading?: boolean;
+  iconOnly?: boolean;
   iconLeft?: React.ReactNode;
   iconRight?: React.ReactNode;
+  accessibilityText?: string;
 }
 
 const sizeStyles = {
@@ -25,6 +27,7 @@ const sizeStyles = {
 };
 
 const StyledButton = styled.button<Variants>`
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -60,6 +63,18 @@ const StyledButton = styled.button<Variants>`
     opacity: 0.6;
     cursor: not-allowed;
   }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
 `;
 
 // ✅ Aquí se tipan las props extendidas:
@@ -75,6 +90,7 @@ const Button = ({
   loading,
   iconLeft,
   iconRight,
+  accessibilityText,
   children,
   ...props
 }: ButtonProps) => {
@@ -86,6 +102,7 @@ const Button = ({
       disabled={loading || props.disabled}
       {...props}
     >
+      {accessibilityText && <span className='sr-only'>{accessibilityText}</span>}
       {loading ? (
         'Cargando...'
       ) : (
