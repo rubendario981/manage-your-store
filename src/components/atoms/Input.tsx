@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { IoMdEye, IoMdEyeOff } from 'react-icons/io';
 import { IoClose } from 'react-icons/io5';
 import styled from 'styled-components';
+import { sharedFormStyles } from '../SharedFormStyle';
 
 interface Variants {
   icon?: React.ReactNode;
@@ -12,18 +13,7 @@ const StyledInput = styled.div`
   align-items: center;
 
   input {
-    width: 100%;
-    padding: 0.75rem;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-  
-    &:focus {
-      outline: none;
-      border-color: #333;
-    }
-    &::invalid {
-      border-color: red;
-    }
+    ${sharedFormStyles}
   }
 
   span {

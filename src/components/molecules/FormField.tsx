@@ -1,6 +1,7 @@
 
 import styled from 'styled-components';
 import Input from '../atoms/Input';
+import Select, { type OptionSelectField } from '../atoms/SelectField';
 
 const Label = styled.label`
   display: block;
@@ -19,29 +20,44 @@ type FormFieldProps = {
 }
 
 type Props = {
-  label: string;
-  type: string;
-  placeholder: string;
   name: string;
+  type: 'text' | 'email' | 'password' | 'number' | 'date' | 'select';
+  label: string;
+  placeholder: string;
   error?: string;
   disabled?: boolean;
+  selectOptions?: OptionSelectField[];
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   register: ReturnType<any>;
 } & FormFieldProps;
 
-const FormField = ({ label, type, placeholder, error, register, name, icon, disabled }: Props) => {
+const FormField = ({ label, type, placeholder, error, register, name, icon, disabled, selectOptions }: Props) => {
   return (
     <div>
       <Label htmlFor={name}>{label}</Label>
-      <Input
-        id={name}
-        name={name}
-        type={type}
-        placeholder={placeholder}
-        icon={icon}
-        disabled={disabled}
-        {...register}
-      />
+      {type === 'select' ? (
+        <Select
+          id={name}
+          name={name}
+          type={type}
+          placeholder={placeholder}
+          icon={icon}
+          disabled={disabled}
+          {...register}
+          options={selectOptions}
+        >
+        </Select>
+      ) : (
+        <Input
+          id={name}
+          name={name}
+          type={type}
+          placeholder={placeholder}
+          icon={icon}
+          disabled={disabled}
+          {...register}
+        />
+      )}
       {error && <ErrorMsg>{error}</ErrorMsg>}
     </div>
   );

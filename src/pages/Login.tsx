@@ -20,6 +20,7 @@ const Container = styled.div`
 type FormData = {
   email: string;
   password: string;
+  options: string;
 };
 
 const Login = () => {
@@ -33,6 +34,7 @@ const Login = () => {
   }, [isAuthenticated, navigate]);
 
   const onSubmit = async (data: FormData) => {
+    console.log(data);
     try {
       const res = await API.post('/auth/login', data);
       await login(res.data.token);
@@ -64,6 +66,20 @@ const Login = () => {
           error={errors.password?.message}
           register={register('password', { required: "Password required" })}
           icon={<IoMdEyeOff />}
+        />
+        
+        <FormField
+          label="Options"
+          type="select"
+          placeholder="Seleccione por favor"
+          name="options"
+          selectOptions={[
+            { value: '1', label: 'Opción 1' },
+            { value: '2', label: 'Opción 2' },
+            { value: '3', label: 'Opción 3' },
+          ]}
+          error={errors.options?.message}
+          register={register('options', { required: "Se debe seleccionar una opción" })}
         />
 
         <Button type="submit">Login</Button>
